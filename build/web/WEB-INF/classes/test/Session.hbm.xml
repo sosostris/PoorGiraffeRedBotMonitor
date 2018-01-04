@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 3, 2018 5:47:38 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="test.Session" table="session" catalog="test" optimistic-lock="version">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="increment" />
+        </id>
+        <many-to-one name="user" class="test.User" fetch="select">
+            <column name="user" not-null="true" />
+        </many-to-one>
+        <property name="startTime" type="timestamp">
+            <column name="start_time" length="19" not-null="true" />
+        </property>
+        <property name="endTime" type="timestamp">
+            <column name="end_time" length="19" />
+        </property>
+        <set name="commands" table="command" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="session" not-null="true" />
+            </key>
+            <one-to-many class="test.Command" />
+        </set>
+    </class>
+</hibernate-mapping>

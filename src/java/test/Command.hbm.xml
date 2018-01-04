@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 3, 2018 5:47:38 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="test.Command" table="command" catalog="test">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <timestamp name="timestamp" column="timestamp" />
+        <many-to-one name="session" class="test.Session" fetch="select">
+            <column name="session" not-null="true" />
+        </many-to-one>
+        <property name="commandType" type="string">
+            <column name="command_type" length="45" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
