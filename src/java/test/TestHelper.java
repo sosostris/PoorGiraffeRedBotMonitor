@@ -20,10 +20,9 @@ import org.hibernate.criterion.Restrictions;
 public class TestHelper {
 
     org.hibernate.Session session = null;
-
-    public TestHelper() {
-        SessionFactory factory = HibernateUtil.getSessionFactory();
-        this.session = factory.getCurrentSession();
+    
+    public TestHelper(org.hibernate.Session session) {   
+        this.session = session;
     }
 
     public void addCommand(int sessionId, String commandType) {

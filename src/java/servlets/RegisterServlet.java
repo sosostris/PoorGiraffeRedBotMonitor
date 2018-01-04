@@ -11,6 +11,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.hibernate.SessionFactory;
+import test.HibernateUtil;
 import test.TestHelper;
 
 /**
@@ -23,14 +25,17 @@ public class RegisterServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        TestHelper testHelper = new TestHelper();
         PrintWriter out = response.getWriter();
+        
+        SessionFactory factory = HibernateUtil.getSessionFactory();
+        org.hibernate.Session hibernateSession = factory.openSession();
+        test.TestHelper th = new test.TestHelper(hibernateSession);
         
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         
         if (!username.equals("") && !password.equals("")) {
-            testHelper.addUser(username, password);
+            th.addUser(username, password);
             out.println("<script type=\"text/javascript\">");
             out.println("location='index.jsp';");
             out.println("</script>");
@@ -40,6 +45,8 @@ public class RegisterServlet extends HttpServlet {
             out.println("location='index.jsp';");
             out.println("</script>");
         }
+        
+        hibernateSession.close();
     }
 
     @Override

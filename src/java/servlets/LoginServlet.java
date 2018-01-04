@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.hibernate.SessionFactory;
+import test.HibernateUtil;
 import test.TestHelper;
 import test.User;
 
@@ -25,16 +27,19 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        TestHelper testHelper = new TestHelper();
+
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession(true);
+        
+        SessionFactory factory = HibernateUtil.getSessionFactory();
+        org.hibernate.Session hibernateSession = factory.openSession();
+        test.TestHelper th = new test.TestHelper(hibernateSession);
         
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         
         if (!username.equals("") && !password.equals("")) {
-            User user = testHelper.getUser(username, password);
+            User user = th.getUser(username, password);
             if (user != null) {
                 String myUsername = user.getName();
                 session.setAttribute("username", myUsername);
@@ -58,6 +63,8 @@ public class LoginServlet extends HttpServlet {
             out.println("location='index.jsp';");
             out.println("</script>");
         }
+        
+        hibernateSession.close();
     }
 
     @Override

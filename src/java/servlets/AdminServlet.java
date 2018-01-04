@@ -14,7 +14,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.hibernate.SessionFactory;
 import test.Command;
+import test.HibernateUtil;
 import test.Session;
 import test.User;
 
@@ -34,6 +36,12 @@ public class AdminServlet extends HttpServlet {
         String hideUserButton = request.getParameter("hideuserbutton");
         String hideSessionButton = request.getParameter("hidesessionbutton");
         String showUserSessionsButton = request.getParameter("showusersessionsbutton");
+        
+        // let all requests use its own session and close the session at the end of the request
+        SessionFactory factory = HibernateUtil.getSessionFactory();
+        org.hibernate.Session hibernateSession = factory.openSession();
+        test.TestHelper th = new test.TestHelper(factory.openSession());
+        
         if (hideSessionButton != null) {
             session.setAttribute("sessions", null);
             RequestDispatcher rd = request.getRequestDispatcher("admin.jsp");
@@ -46,14 +54,12 @@ public class AdminServlet extends HttpServlet {
             rd.forward(request, response);
         }
         if (veiwAllUsersButton != null) {
-            test.TestHelper th = new test.TestHelper();
             List<User> users = th.getAllUsers();
             session.setAttribute("users", users);
             RequestDispatcher rd = request.getRequestDispatcher("admin.jsp");
             rd.forward(request, response);
         }
         if (viewAllSessionsButton != null) {
-            test.TestHelper th = new test.TestHelper();
             List<Session> sessions = th.getAllSessions();
             session.setAttribute("sessions", sessions);
             RequestDispatcher rd = request.getRequestDispatcher("admin.jsp");
@@ -62,13 +68,13 @@ public class AdminServlet extends HttpServlet {
         
         if (showUserSessionsButton != null) {
             int selectedUserId = Integer.parseInt(request.getParameter("selectedUserId"));
-            test.TestHelper th = new test.TestHelper();
             List<Session> selectedSessions = th.getSessionsByUserId(selectedUserId);
             session.setAttribute("selectedSessions", selectedSessions);
             session.setAttribute("selectedUsername", th.getUserById(selectedUserId).getName());
             RequestDispatcher rd = request.getRequestDispatcher("admin.jsp");
             rd.forward(request, response);
         }
+        hibernateSession.close();
     }
 
 }

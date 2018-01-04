@@ -17,7 +17,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.hibernate.SessionFactory;
 import test.Command;
+import test.HibernateUtil;
 
 /**
  *
@@ -29,21 +31,23 @@ public class MovementServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(true);
+        
+        SessionFactory factory = HibernateUtil.getSessionFactory();
+        org.hibernate.Session hibernateSession = factory.openSession();
+        test.TestHelper th = new test.TestHelper(hibernateSession);
+        
         String movementButton = request.getParameter("movementbutton");
         String replayButton = request.getParameter("replaybutton");
+        
         if (movementButton != null) {
             int newSessionId = (int) session.getAttribute("newSessionId");
             if (movementButton.equals("UP")) {
-                test.TestHelper th = new test.TestHelper();
                 th.addCommand(newSessionId, "UP");
             } else if (movementButton.equals("RIGHT")) {
-                test.TestHelper th = new test.TestHelper();
                 th.addCommand(newSessionId, "RIGHT");
             } else if (movementButton.equals("DOWN")) {
-                test.TestHelper th = new test.TestHelper();
                 th.addCommand(newSessionId, "DOWN");
             } else if (movementButton.equals("LEFT")) {
-                test.TestHelper th = new test.TestHelper();
                 th.addCommand(newSessionId, "LEFT");
             }
             session.setAttribute("newSessionId", newSessionId);
@@ -75,6 +79,7 @@ public class MovementServlet extends HttpServlet {
             RequestDispatcher rd = request.getRequestDispatcher("usersessions.jsp");
                 rd.forward(request, response);
         }
+        hibernateSession.close();
     }
 
     @Override
