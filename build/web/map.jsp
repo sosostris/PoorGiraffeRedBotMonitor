@@ -25,6 +25,13 @@
             </div>
             <div class="col-sm-2" style="margin-left:30px">
                 <div class="row">
+                    <div style="margin-bottom:10px; position:relative; left:145px">
+                        <form action="GotoServlet">
+                            <input name="gotobutton" type="submit" class="btn btn-outline-warning" value="Log out">
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
                     <c:if test="${not empty username}">
                         <div style="width:100%">
                             <p style="font-size:16px; font-weight:400; color:#ffc107; text-align:right">
@@ -48,23 +55,23 @@
                 <c:if test="${not empty newSessionId && (not sessionFinished || empty sessionFinished)}">
 
                     <!-- Coordinates -->
-                    <div class="coordinates" style="margin-left:24px; margin-bottom:20px">
+                    <div class="coordinates" style="margin-left:14px; margin-bottom:20px">
                         Coordinates: (
                         <span>
-                            <c:if test="${not empty coorX}">
-                                ${coorX} 
+                            <c:if test="${not empty x}">
+                                ${x} 
                             </c:if>
-                            <c:if test="${empty coorX}">
-                                0
+                            <c:if test="${empty x}">
+                                500
                             </c:if>
                         </span>
                         <span>, </span>
                         <span>
-                            <c:if test="${not empty coorY}">
-                                ${coorY}
+                            <c:if test="${not empty y}">
+                                ${y}
                             </c:if>
-                            <c:if test="${empty coorY}">
-                                0
+                            <c:if test="${empty y}">
+                                400
                             </c:if>
                         </span>
                         )

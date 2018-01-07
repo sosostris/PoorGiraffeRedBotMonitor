@@ -109,16 +109,10 @@ public class MovementServlet extends HttpServlet {
                 } else if (command.getCommandType().equals("RIGHT")) {
                     MovementBean.moveByUDP("R");
                 }
-                for (int i=0; i<20; i++) {
-                    if (!MovementBean.queryDistance()) {
-                        MovementBean.stop();
-                        break;
-                    }
-                    try {
-                        Thread.sleep(50);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(MovementServlet.class.getName()).log(Level.SEVERE, null, ex);
-                    }    
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(MovementServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             MovementBean.moveByUDP("ST");
