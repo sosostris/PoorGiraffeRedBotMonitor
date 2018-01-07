@@ -5,7 +5,6 @@
  */
 package servlets;
 
-import beans.LEDBean;
 import beans.MovementBean;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -28,10 +27,8 @@ import test.HibernateUtil;
  */
 public class MovementServlet extends HttpServlet {
     
-    private int currentX = 500;
-    private int currentY = 400;
-    private int newX;
-    private int newY;
+    private int x = 500;
+    private int y = 400;
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -53,8 +50,6 @@ public class MovementServlet extends HttpServlet {
             if (movementButton.equals("U")) {
                 th.addCommand(newSessionId, "UP");
                 MovementBean.moveByUDP("U");
-                newY += 25;
-                newX = currentX;
             } else if (movementButton.equals("R")) {
                 th.addCommand(newSessionId, "RIGHT");
                 MovementBean.moveByUDP("R");
@@ -68,13 +63,10 @@ public class MovementServlet extends HttpServlet {
                 MovementBean.moveByUDP("ST");
             }
             session.setAttribute("newSessionId", newSessionId);
+            getPositions(th, newSessionId);
+            session.setAttribute("x", x);
+            session.setAttribute("y", y);
             session.setAttribute("sessionFinished", false);
-            session.setAttribute("newX", newX);
-            session.setAttribute("newY", newY);
-            session.setAttribute("oldX", currentX);
-            session.setAttribute("oldY", currentY);
-            currentX = newX;
-            currentY = newY;
             RequestDispatcher rd = request.getRequestDispatcher("map.jsp");
             rd.forward(request, response);
         }
@@ -167,6 +159,24 @@ public class MovementServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+    }
+    
+    private void getPositions(test.TestHelper th, int newSessionId) {
+        x = 500;
+        y = 400;
+        List<Command> newCommandList = th.getMovementsBySessionId(newSessionId);
+        for (int i=0; i<newCommandList.size(); i++) {
+            String commandType = newCommandList.get(i).getCommandType();
+            if (commandType.equals("UP")) {
+                y = y - 25;
+            } else if (commandType.equals("DOWN")) {
+                y = y + 25;
+            } else if (commandType.equals("LEFT")) {
+                x = x - 25;
+            } else if (commandType.equals("RIGHT")) {
+                x = x + 25;
+            }
+        }
     }
 
 }

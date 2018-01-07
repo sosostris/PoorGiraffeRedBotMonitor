@@ -12,6 +12,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
@@ -163,8 +164,8 @@ public class MovementBean {
         } catch (UnknownHostException ex) {
             Logger.getLogger(MovementBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        byte[] sendData = new byte[1024];
-        byte[] receiveData = new byte[1024];
+        byte[] sendData = new byte[8];
+        byte[] receiveData = new byte[8];
         sendData = command.getBytes();
         DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 2390);
         try {
@@ -174,13 +175,22 @@ public class MovementBean {
         }
         DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
         try {
-            clientSocket.receive(receivePacket);
-        } catch (IOException ex) {
+            clientSocket.setSoTimeout(1000);
+            while (true) {
+                try {
+                    clientSocket.receive(receivePacket);
+                    byte[] buffer = receivePacket.getData();
+                    System.out.println("FROM SERVER byte 1: " + buffer[0]);
+                    System.out.println("FROM SERVER byte 2: " + buffer[1]);
+                } catch (SocketTimeoutException e) {
+                    break;  // Closing here would cause a SocketException
+                } catch (IOException ex) {
+                    Logger.getLogger(MovementBean.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } catch (SocketException ex) {
             Logger.getLogger(MovementBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        String modifiedSentence = new String(receivePacket.getData());
-        System.out.println("FROM SERVER:" + modifiedSentence);
         clientSocket.close();
     }
-
 }

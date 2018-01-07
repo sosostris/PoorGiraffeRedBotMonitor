@@ -129,6 +129,8 @@
     </body>
     <script>
         var c = document.getElementById("giraffeMap");
+        var x = 500;
+        var y = 400;
         var ctx = c.getContext("2d");
         ctx.lineWidth = 1;
         ctx.strokeStyle = '#ffffff';
@@ -143,15 +145,26 @@
             ctx.stroke();
         }
     </script>
-    <c:if test="${not empty newX}">
+    <c:if test="${not empty x}">
         <script>
             var c = document.getElementById("giraffeMap");
             var ctx = c.getContext("2d");
-            ctx.lineWidth = 1;
-            ctx.strokeStyle = 'black';
-            ctx.moveTo(${oldX}, ${oldY});
-            ctx.lineTo(${newX}, ${newY});
-            ctx.stroke();
+            var radius = 10;
+            ctx.beginPath();
+            ctx.arc(${x}, ${y}, radius, 0, 2 * Math.PI, false);
+            ctx.fillStyle = 'red';
+            ctx.fill();
+        </script>
+    </c:if>
+    <c:if test="${empty x}">
+        <script>
+            var c = document.getElementById("giraffeMap");
+            var ctx = c.getContext("2d");
+            var radius = 10;
+            ctx.beginPath();
+            ctx.arc(500, 400, radius, 0, 2 * Math.PI, false);
+            ctx.fillStyle = 'red';
+            ctx.fill();
         </script>
     </c:if>
 </html>
