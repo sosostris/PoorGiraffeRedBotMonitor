@@ -78,7 +78,7 @@
                         </div>
                     </c:if>
                 </div>
-            </form><br>
-        </c:if><br>
+            </form>
+        </c:if>
     </body>
 </html>
