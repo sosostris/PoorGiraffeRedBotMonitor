@@ -17,9 +17,10 @@ import javax.ejb.Stateless;
  *
  * @author XUZH0001
  */
+@Stateless
 public class LEDBean {
 
-    private static String ip = "192.168.1.83";
+    private static String ip = "192.168.1.99";
 
     public static void turnOnLED() {
         URLConnection connection = null;

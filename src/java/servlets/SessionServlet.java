@@ -5,6 +5,7 @@
  */
 package servlets;
 
+import beans.MovementBean;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -40,6 +41,7 @@ public class SessionServlet extends HttpServlet {
         String sessionbutton = request.getParameter("sessionbutton");
         String selectedSessionId = request.getParameter("selectedSessionId");
         String adminButton = request.getParameter("adminbutton");
+        
         if (adminButton != null) {
             session.setAttribute("userId", userId);
             session.setAttribute("users", null);
@@ -51,13 +53,18 @@ public class SessionServlet extends HttpServlet {
             if (sessionbutton.equals("Start session")) {
                 int newSessionId = th.addSession(userId);
                 session.setAttribute("newSessionId", newSessionId);
-                RequestDispatcher rd = request.getRequestDispatcher("usersessions.jsp");
+                session.setAttribute("sessionFinished", false);
+                RequestDispatcher rd = request.getRequestDispatcher("map.jsp");
                 rd.forward(request, response);
             } else if (sessionbutton.equals("End session")) {
+                MovementBean.moveByUDP("ST");
                 int newSessionId = (int) session.getAttribute("newSessionId");
                 th.updateSession(newSessionId);
                 session.setAttribute("newSessionId", newSessionId);
-                RequestDispatcher rd = request.getRequestDispatcher("usersessions.jsp");
+                session.setAttribute("sessionFinished", true);
+                List<Command> commandList = th.getMovementsBySessionId(newSessionId);
+                session.setAttribute("commandList", commandList);
+                RequestDispatcher rd = request.getRequestDispatcher("map.jsp");
                 rd.forward(request, response);
             } else if (sessionbutton.equals("Get my sessions")) {
                 mySessions = th.getSessionsByUserId(userId);

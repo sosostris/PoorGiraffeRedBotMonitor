@@ -20,6 +20,10 @@
         <servlet-name>AdminServlet</servlet-name>
         <servlet-class>servlets.AdminServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GotoServlet</servlet-name>
+        <servlet-class>servlets.GotoServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MovementServlet</servlet-name>
         <url-pattern>/MovementServlet</url-pattern>
@@ -39,6 +43,10 @@
     <servlet-mapping>
         <servlet-name>AdminServlet</servlet-name>
         <url-pattern>/AdminServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GotoServlet</servlet-name>
+        <url-pattern>/GotoServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

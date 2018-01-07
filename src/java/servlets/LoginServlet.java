@@ -48,7 +48,7 @@ public class LoginServlet extends HttpServlet {
                 if (user.getType().equals("admin")) {
                     session.setAttribute("isAdmin", true);
                 }
-                RequestDispatcher rd = request.getRequestDispatcher("usersessions.jsp");
+                RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
                 rd.forward(request, response);
             } else {
                 out.println("<script type=\"text/javascript\">");
