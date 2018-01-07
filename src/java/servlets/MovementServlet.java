@@ -75,35 +75,21 @@ public class MovementServlet extends HttpServlet {
             List<Command> commandList = (List<Command>) session.getAttribute("commandList");
             for (Command command : commandList) {
                 if (command.getCommandType().equals("UP")) {
-                    MovementBean.moveUp();
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(MovementServlet.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    MovementBean.moveByUDP("U");
                 } else if (command.getCommandType().equals("DOWN")) {
-                    MovementBean.moveDown();
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(MovementServlet.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    MovementBean.moveByUDP("D");
                 } else if (command.getCommandType().equals("LEFT")) {
-                    MovementBean.moveLeft();
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(MovementServlet.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    MovementBean.moveByUDP("L");
                 } else if (command.getCommandType().equals("RIGHT")) {
-                    MovementBean.moveRight();
-                    try {
+                    MovementBean.moveByUDP("R");
+                }
+                try {
                         Thread.sleep(1000);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(MovementServlet.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }
             }
+            MovementBean.moveByUDP("ST");
             session.setAttribute("mySelectedSessionId", mySelectedSessionId);
             session.setAttribute("commandList", commandList);
             RequestDispatcher rd = request.getRequestDispatcher("usersessions.jsp");
@@ -116,32 +102,23 @@ public class MovementServlet extends HttpServlet {
             for (Command command : commandList) {
                 if (command.getCommandType().equals("UP")) {
                     MovementBean.moveByUDP("U");
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(MovementServlet.class.getName()).log(Level.SEVERE, null, ex);
-                    }
                 } else if (command.getCommandType().equals("DOWN")) {
                     MovementBean.moveByUDP("D");
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(MovementServlet.class.getName()).log(Level.SEVERE, null, ex);
-                    }
                 } else if (command.getCommandType().equals("LEFT")) {
                     MovementBean.moveByUDP("L");
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(MovementServlet.class.getName()).log(Level.SEVERE, null, ex);
-                    }
                 } else if (command.getCommandType().equals("RIGHT")) {
                     MovementBean.moveByUDP("R");
+                }
+                for (int i=0; i<20; i++) {
+                    if (!MovementBean.queryDistance()) {
+                        MovementBean.stop();
+                        break;
+                    }
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(50);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(MovementServlet.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    }    
                 }
             }
             MovementBean.moveByUDP("ST");

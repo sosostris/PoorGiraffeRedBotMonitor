@@ -154,7 +154,7 @@ public class MovementBean {
         String hostIp = "192.168.1.99";
         DatagramSocket clientSocket = null;
         try {
-            clientSocket = new DatagramSocket();
+            clientSocket = new DatagramSocket(1234);
         } catch (SocketException ex) {
             Logger.getLogger(MovementBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -192,5 +192,55 @@ public class MovementBean {
             Logger.getLogger(MovementBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         clientSocket.close();
+    }
+    
+    public static boolean queryDistance() {
+        int distance1 = 0;
+        int distance2 = 0;
+        String command = "CM";
+        String hostIp = "192.168.1.99";
+        DatagramSocket clientSocket = null;
+        try {
+            clientSocket = new DatagramSocket(1234);
+        } catch (SocketException ex) {
+            Logger.getLogger(MovementBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        InetAddress IPAddress = null;
+        try {
+            IPAddress = InetAddress.getByName(hostIp);
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(MovementBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        byte[] sendData = new byte[8];
+        byte[] receiveData = new byte[8];
+        sendData = command.getBytes();
+        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 2390);
+        try {
+            clientSocket.send(sendPacket);
+        } catch (IOException ex) {
+            Logger.getLogger(MovementBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+        try {
+            clientSocket.setSoTimeout(1000);
+            while (true) {
+                try {
+                    clientSocket.receive(receivePacket);
+                    byte[] buffer = receivePacket.getData();
+                    distance1 = buffer[2];
+                    distance2 = buffer[3];
+                    System.out.println("FROM SERVER byte 1: " + distance1 + "cm");
+                    System.out.println("FROM SERVER byte 1: " + distance2 + "cm");
+                } catch (SocketTimeoutException e) {
+                    break;  // Closing here would cause a SocketException
+                } catch (IOException ex) {
+                    Logger.getLogger(MovementBean.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } catch (SocketException ex) {
+            Logger.getLogger(MovementBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        clientSocket.close();
+        return (distance1 < 20 || distance2 < 20);
     }
 }

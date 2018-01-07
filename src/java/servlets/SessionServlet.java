@@ -41,6 +41,7 @@ public class SessionServlet extends HttpServlet {
         String sessionbutton = request.getParameter("sessionbutton");
         String selectedSessionId = request.getParameter("selectedSessionId");
         String adminButton = request.getParameter("adminbutton");
+        mySessions = (List) session.getAttribute("mySessions");
         
         if (adminButton != null) {
             session.setAttribute("userId", userId);

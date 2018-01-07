@@ -14,7 +14,7 @@
         <title>Poor Giraffe RedBot Monitor</title>
     </head>
     <body>
-        <h1 align="center" style="margin-top:20px; margin-bottom:20px">Poor Giraffe Redbot Monitor :(</h1>
+        <h1 align="center" style="margin-top:20px; margin-bottom:20px">Poor Giraffe RedBot Monitor :(</h1>
         <c:if test="${empty username}">
             <img src="resources/giraffe-monitor.jpg" width="240px" height="240px" 
                  style="display:block; margin:0 auto;" alt=""/>
