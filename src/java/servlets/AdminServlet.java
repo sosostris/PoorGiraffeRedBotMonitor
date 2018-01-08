@@ -88,6 +88,7 @@ public class AdminServlet extends HttpServlet {
             rd.forward(request, response);
         }
         if (replayButton != null) {
+            MovementBean.reset();
             int selectedSessionId = (int) session.getAttribute("mySelectedSessionId");
             List<Command> commandList = (List<Command>) session.getAttribute("commandList");
             for (Command command : commandList) {
@@ -101,7 +102,7 @@ public class AdminServlet extends HttpServlet {
                     MovementBean.moveByUDP("R");
                 }
                 try {
-                        Thread.sleep(1000);
+                        Thread.sleep(2000);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(MovementServlet.class.getName()).log(Level.SEVERE, null, ex);
                     }

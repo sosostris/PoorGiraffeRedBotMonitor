@@ -116,6 +116,30 @@ public class MovementBean {
     public static void reset() {
         dx = 0;
         dy = 0;
+        
+        String hostIp = "192.168.1.99";
+        DatagramSocket clientSocket = null;
+        try {
+            clientSocket = new DatagramSocket(1234);
+        } catch (SocketException ex) {
+            Logger.getLogger(MovementBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        InetAddress IPAddress = null;
+        try {
+            IPAddress = InetAddress.getByName(hostIp);
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(MovementBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        byte[] sendData = new byte[8];
+        byte[] receiveData = new byte[8];
+        sendData = "RE".getBytes();
+        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 2390);
+        try {
+            clientSocket.send(sendPacket);
+        } catch (IOException ex) {
+            Logger.getLogger(MovementBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        clientSocket.close();
     }
     
 }

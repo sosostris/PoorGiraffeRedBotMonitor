@@ -71,6 +71,7 @@ public class MovementServlet extends HttpServlet {
             rd.forward(request, response);
         }
         if (replayButton != null) {
+            MovementBean.reset();
             int x = 475;
             int y = 400;
             int mySelectedSessionId = (int) session.getAttribute("mySelectedSessionId");
@@ -90,7 +91,7 @@ public class MovementServlet extends HttpServlet {
                     MovementBean.moveByUDP("R");
                 }
                 try {
-                        Thread.sleep(1500);
+                        Thread.sleep(2000);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(MovementServlet.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -105,6 +106,7 @@ public class MovementServlet extends HttpServlet {
         }
 
         if (replayNewSessionButton != null) {
+            MovementBean.reset();
             int newSessionId = (int) session.getAttribute("newSessionId");
             List<Command> commandList = (List<Command>) session.getAttribute("commandList");
             for (Command command : commandList) {
@@ -118,7 +120,7 @@ public class MovementServlet extends HttpServlet {
                     MovementBean.moveByUDP("R");
                 }
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(2000);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(MovementServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
