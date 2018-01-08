@@ -76,6 +76,8 @@ public class SessionServlet extends HttpServlet {
                 session.setAttribute("mySessions", mySessions);
                 session.setAttribute("mySelectedSessionId", mySelectedSessionId);
                 session.setAttribute("commandList", commandList);
+                Object[] commandArray = commandList.toArray();
+                session.setAttribute("commandArray", commandArray);
                 RequestDispatcher rd = request.getRequestDispatcher("usersessions.jsp");
                 rd.forward(request, response);
             }

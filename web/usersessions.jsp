@@ -14,16 +14,11 @@
         <title>My sessions</title>
     </head>
     <body>
-        <h1 style="position:relative; left:400px; width:440px; margin:20px 0 20px 0">Poor Giraffe Sessions :(</h1>
+        <h1 style="position:relative; left:650px; width:440px; margin:20px 0 20px 0">Poor Giraffe Sessions :(</h1>
         <div class="row" style="width:100%">
-            <div style="width:2%"></div>
-            <div class="col-sm-9">
-                <canvas id="giraffeMap" width="1000" height="800" style="background-color:#d9d9d9">    
-                </canvas>
-            </div>
-            <div class="col-sm-2" style="margin-left:30px">
+            <div class="col-sm-3" style="margin-left:40px;padding-right:0">
                 <div class="row">
-                    <div style="margin-bottom:10px; position:relative; left:190px">
+                    <div style="margin-bottom:10px">
                         <form action="GotoServlet">
                             <input name="gotobutton" type="submit" class="btn btn-outline-warning" value="Log out">
                         </form>
@@ -31,8 +26,8 @@
                 </div>
                 <div class="row">
                     <c:if test="${not empty username}">
-                        <div style="margin-bottom:10px; position:relative; left:182px">
-                            <p style="font-size:16px; font-weight:400; color:#ffc107; text-align:right">
+                        <div style="margin-bottom:10px;">
+                            <p style="font-size:16px; font-weight:400; color:#ffc107">
                                 User: ${username}<br>
                                 ID: ${userId}<br>
                                 <c:if test="${not empty selectedSessionId}">
@@ -76,8 +71,8 @@
                     </form>
                 </div>
                 <c:if test="${not empty mySelectedSessionId}">
-                    <div class="row" style="width:272px">
-                        <div style="border:1px solid #ffc107; margin-top:20px; margin-bottom:10px;
+                    <div class="row">
+                        <div style="width:272px; border:1px solid #ffc107; margin-top:20px; margin-bottom:10px;
                              border-radius:5px; padding:10px 5px 10px 5px; color:#007bff">
                             <c:if test="${not empty mySelectedSessionId}">
                                 <span style="font-size:14px; color:gray">Session ${mySelectedSessionId}:</span><br>
@@ -92,29 +87,45 @@
                     <div class="row" style="margin-bottom:80px">
                         <form action="MovementServlet">
                             <input style="margin-left:208px; font-size:13px" type="submit" 
-                                   class="btn btn-warning" name="replaybutton" value="Replay">
+                                   class="btn btn-warning" name="replaybutton" value="Replay"
+                                   onclick="moveDot()">
                         </form>
                     </div>
                 </c:if>
             </div>
+            <div class="col-sm-8" style="padding-left:0">
+                <canvas id="giraffeMap" width="950" height="800" style="background-color:#d9d9d9">    
+                </canvas>
+            </div>
         </div>
     </body>
     <script>
-        var c = document.getElementById("giraffeMap");
-        var x = 500;
+        var x = 475;
         var y = 400;
+        var c = document.getElementById("giraffeMap");
         var ctx = c.getContext("2d");
         ctx.lineWidth = 1;
         ctx.strokeStyle = '#ffffff';
-        for (var i = 1; i < 32; i++) {
+        for (var i = 1; i < 33; i++) {
             ctx.moveTo(0, 25 * i);
-            ctx.lineTo(1000, 25 * i);
+            ctx.lineTo(950, 25 * i);
             ctx.stroke();
         }
-        for (var i = 1; i < 41; i++) {
+        for (var i = 1; i < 39; i++) {
             ctx.moveTo(i * 25, 0);
             ctx.lineTo(i * 25, 800);
             ctx.stroke();
         }
     </script>
+    <c:if test="${empty commandArray}">
+        <script>
+            var c = document.getElementById("giraffeMap");
+            var ctx = c.getContext("2d");
+            var radius = 10;
+            ctx.beginPath();
+            ctx.arc(500, 400, radius, 0, 2 * Math.PI, false);
+            ctx.fillStyle = 'red';
+            ctx.fill();
+        </script>
+    </c:if>
 </html>

@@ -65,7 +65,7 @@
                     <div class="col-sm-3">
                         <img src="resources/Giraffe-history.jpg" alt=""/>
                         <input name="gotobutton" type="submit" class="btn btn-outline-warning"
-                               style="margin-top:10px; position:relative; left:100px" value="View my sessions">
+                               style="margin-top:10px; margin-left:130px" value="View my sessions">
                     </div>
                     <div class="col-sm-1"></div>
                     <c:if test="${isAdmin}">

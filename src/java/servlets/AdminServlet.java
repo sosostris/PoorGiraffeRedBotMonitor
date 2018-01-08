@@ -5,9 +5,12 @@
  */
 package servlets;
 
+import beans.MovementBean;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -36,6 +39,8 @@ public class AdminServlet extends HttpServlet {
         String hideUserButton = request.getParameter("hideuserbutton");
         String hideSessionButton = request.getParameter("hidesessionbutton");
         String showUserSessionsButton = request.getParameter("showusersessionsbutton");
+        String showMovementsButton = request.getParameter("showmovementsbutton");
+        String replayButton = request.getParameter("replaybutton");
         
         // let all requests use its own session and close the session at the end of the request
         SessionFactory factory = HibernateUtil.getSessionFactory();
@@ -56,6 +61,7 @@ public class AdminServlet extends HttpServlet {
         if (veiwAllUsersButton != null) {
             List<User> users = th.getAllUsers();
             session.setAttribute("users", users);
+            session.setAttribute("commandList", null);
             RequestDispatcher rd = request.getRequestDispatcher("admin.jsp");
             rd.forward(request, response);
         }
@@ -65,7 +71,6 @@ public class AdminServlet extends HttpServlet {
             RequestDispatcher rd = request.getRequestDispatcher("admin.jsp");
             rd.forward(request, response);
         }
-        
         if (showUserSessionsButton != null) {
             int selectedUserId = Integer.parseInt(request.getParameter("selectedUserId"));
             List<Session> selectedSessions = th.getSessionsByUserId(selectedUserId);
@@ -74,6 +79,40 @@ public class AdminServlet extends HttpServlet {
             RequestDispatcher rd = request.getRequestDispatcher("admin.jsp");
             rd.forward(request, response);
         }
+        if (showMovementsButton != null) {
+            int selectedSessionId = Integer.parseInt(request.getParameter("selectedSessionId"));
+            List<Command> commandList = th.getMovementsBySessionId(selectedSessionId);
+            session.setAttribute("commandList", commandList);
+            session.setAttribute("mySelectedSessionId", selectedSessionId);
+            RequestDispatcher rd = request.getRequestDispatcher("admin.jsp");
+            rd.forward(request, response);
+        }
+        if (replayButton != null) {
+            int selectedSessionId = (int) session.getAttribute("mySelectedSessionId");
+            List<Command> commandList = (List<Command>) session.getAttribute("commandList");
+            for (Command command : commandList) {
+                if (command.getCommandType().equals("UP")) {
+                    MovementBean.moveByUDP("U");
+                } else if (command.getCommandType().equals("DOWN")) {
+                    MovementBean.moveByUDP("D");
+                } else if (command.getCommandType().equals("LEFT")) {
+                    MovementBean.moveByUDP("L");
+                } else if (command.getCommandType().equals("RIGHT")) {
+                    MovementBean.moveByUDP("R");
+                }
+                try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(MovementServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+            }
+            MovementBean.moveByUDP("ST");
+            session.setAttribute("mySelectedSessionId", selectedSessionId);
+            session.setAttribute("commandList", commandList);
+            RequestDispatcher rd = request.getRequestDispatcher("admin.jsp");
+            rd.forward(request, response);
+        }
+        
         hibernateSession.close();
     }
 

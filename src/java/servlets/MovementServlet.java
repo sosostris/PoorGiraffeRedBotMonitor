@@ -75,13 +75,17 @@ public class MovementServlet extends HttpServlet {
             List<Command> commandList = (List<Command>) session.getAttribute("commandList");
             for (Command command : commandList) {
                 if (command.getCommandType().equals("UP")) {
-                    MovementBean.moveByUDP("U");
+                    //MovementBean.moveByUDP("U");
+                    out.println("<script type=\"text/javascript\">");
+                    out.println("alert('Please input correct user name and password');");
+                    out.println("location='usersessions.jsp';");
+                    out.println("</script>");
                 } else if (command.getCommandType().equals("DOWN")) {
-                    MovementBean.moveByUDP("D");
+                    //MovementBean.moveByUDP("D");
                 } else if (command.getCommandType().equals("LEFT")) {
-                    MovementBean.moveByUDP("L");
+                    //MovementBean.moveByUDP("L");
                 } else if (command.getCommandType().equals("RIGHT")) {
-                    MovementBean.moveByUDP("R");
+                    //MovementBean.moveByUDP("R");
                 }
                 try {
                         Thread.sleep(1000);
