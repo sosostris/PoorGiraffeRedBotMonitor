@@ -31,107 +31,10 @@ public class MovementBean {
     static int dx;
     static int dy;
 
-    public static void moveUp() {
+    public static void moveByHttp(String up) {
         URLConnection connection = null;
         try {
-            connection = new URL("http://" + ip + "/UP").openConnection();
-            connection.setConnectTimeout(3000);
-            BufferedReader in;
-            try {
-                in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String inputLine;
-                StringBuffer response = new StringBuffer();
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
-                // print response
-                System.out.println(response.toString());
-            } catch (IOException ex) {
-                Logger.getLogger(LEDBean.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(LEDBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public static void moveDown() {
-        URLConnection connection = null;
-        try {
-            connection = new URL("http://" + ip + "/DOWN").openConnection();
-            connection.setConnectTimeout(3000);
-            BufferedReader in;
-            try {
-                in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String inputLine;
-                StringBuffer response = new StringBuffer();
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
-                // print response
-                System.out.println(response.toString());
-            } catch (IOException ex) {
-                Logger.getLogger(LEDBean.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(LEDBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
-
-    public static void moveLeft() {
-        URLConnection connection = null;
-        try {
-            connection = new URL("http://" + ip + "/LEFT").openConnection();
-            connection.setConnectTimeout(3000);
-            BufferedReader in;
-            try {
-                in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String inputLine;
-                StringBuffer response = new StringBuffer();
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
-                // print response
-                System.out.println(response.toString());
-            } catch (IOException ex) {
-                Logger.getLogger(LEDBean.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(LEDBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public static void moveRight() {
-        URLConnection connection = null;
-        try {
-            connection = new URL("http://" + ip + "/RIGHT").openConnection();
-            connection.setConnectTimeout(3000);
-            BufferedReader in;
-            try {
-                in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String inputLine;
-                StringBuffer response = new StringBuffer();
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
-                // print response
-                System.out.println(response.toString());
-            } catch (IOException ex) {
-                Logger.getLogger(LEDBean.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(LEDBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public static void stop() {
-        URLConnection connection = null;
-        try {
-            connection = new URL("http://" + ip + "/STOP").openConnection();
+            connection = new URL("http://" + ip + "/up").openConnection();
             connection.setConnectTimeout(3000);
             BufferedReader in;
             try {
