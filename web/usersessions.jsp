@@ -87,8 +87,7 @@
                     <div class="row" style="margin-bottom:80px">
                         <form action="MovementServlet">
                             <input style="margin-left:208px; font-size:13px" type="submit" 
-                                   class="btn btn-warning" name="replaybutton" value="Replay"
-                                   onclick="moveDot()">
+                                   class="btn btn-warning" name="replaybutton" value="Replay">
                         </form>
                     </div>
                 </c:if>
@@ -100,8 +99,6 @@
         </div>
     </body>
     <script>
-        var x = 475;
-        var y = 400;
         var c = document.getElementById("giraffeMap");
         var ctx = c.getContext("2d");
         ctx.lineWidth = 1;
@@ -117,13 +114,24 @@
             ctx.stroke();
         }
     </script>
-    <c:if test="${empty commandArray}">
+    <c:if test="${not empty finalX}">
         <script>
             var c = document.getElementById("giraffeMap");
             var ctx = c.getContext("2d");
             var radius = 10;
             ctx.beginPath();
-            ctx.arc(500, 400, radius, 0, 2 * Math.PI, false);
+            ctx.arc(${finalX}, ${finalY}, radius, 0, 2 * Math.PI, false);
+            ctx.fillStyle = 'red';
+            ctx.fill();
+        </script>
+    </c:if>
+    <c:if test="${empty finalX}">
+        <script>
+            var c = document.getElementById("giraffeMap");
+            var ctx = c.getContext("2d");
+            var radius = 10;
+            ctx.beginPath();
+            ctx.arc(475, 400, radius, 0, 2 * Math.PI, false);
             ctx.fillStyle = 'red';
             ctx.fill();
         </script>

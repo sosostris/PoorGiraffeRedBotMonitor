@@ -52,9 +52,12 @@ public class SessionServlet extends HttpServlet {
         }
         if (sessionbutton != null) {
             if (sessionbutton.equals("Start session")) {
+                MovementBean.reset();
                 int newSessionId = th.addSession(userId);
                 session.setAttribute("newSessionId", newSessionId);
                 session.setAttribute("sessionFinished", false);
+                session.setAttribute("x", null);
+                session.setAttribute("y", null);
                 RequestDispatcher rd = request.getRequestDispatcher("map.jsp");
                 rd.forward(request, response);
             } else if (sessionbutton.equals("End session")) {
@@ -76,8 +79,6 @@ public class SessionServlet extends HttpServlet {
                 session.setAttribute("mySessions", mySessions);
                 session.setAttribute("mySelectedSessionId", mySelectedSessionId);
                 session.setAttribute("commandList", commandList);
-                Object[] commandArray = commandList.toArray();
-                session.setAttribute("commandArray", commandArray);
                 RequestDispatcher rd = request.getRequestDispatcher("usersessions.jsp");
                 rd.forward(request, response);
             }

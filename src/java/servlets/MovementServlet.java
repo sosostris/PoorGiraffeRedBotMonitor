@@ -64,31 +64,33 @@ public class MovementServlet extends HttpServlet {
             }
             session.setAttribute("newSessionId", newSessionId);
             getPositions(th, newSessionId);
-            session.setAttribute("x", x);
-            session.setAttribute("y", y);
+            session.setAttribute("x", 500 + MovementBean.getDX());
+            session.setAttribute("y", 400 + MovementBean.getDY());
             session.setAttribute("sessionFinished", false);
             RequestDispatcher rd = request.getRequestDispatcher("map.jsp");
             rd.forward(request, response);
         }
         if (replayButton != null) {
+            int x = 475;
+            int y = 400;
             int mySelectedSessionId = (int) session.getAttribute("mySelectedSessionId");
             List<Command> commandList = (List<Command>) session.getAttribute("commandList");
             for (Command command : commandList) {
                 if (command.getCommandType().equals("UP")) {
-                    //MovementBean.moveByUDP("U");
-                    out.println("<script type=\"text/javascript\">");
-                    out.println("alert('Please input correct user name and password');");
-                    out.println("location='usersessions.jsp';");
-                    out.println("</script>");
+                    y -= 25;
+                    MovementBean.moveByUDP("U");
                 } else if (command.getCommandType().equals("DOWN")) {
-                    //MovementBean.moveByUDP("D");
+                    y += 25;
+                    MovementBean.moveByUDP("D");
                 } else if (command.getCommandType().equals("LEFT")) {
-                    //MovementBean.moveByUDP("L");
+                    x -= 25;
+                    MovementBean.moveByUDP("L");
                 } else if (command.getCommandType().equals("RIGHT")) {
-                    //MovementBean.moveByUDP("R");
+                    x += 25;
+                    MovementBean.moveByUDP("R");
                 }
                 try {
-                        Thread.sleep(1000);
+                        Thread.sleep(1500);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(MovementServlet.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -96,6 +98,8 @@ public class MovementServlet extends HttpServlet {
             MovementBean.moveByUDP("ST");
             session.setAttribute("mySelectedSessionId", mySelectedSessionId);
             session.setAttribute("commandList", commandList);
+            session.setAttribute("finalX", x);
+            session.setAttribute("finalY", y);
             RequestDispatcher rd = request.getRequestDispatcher("usersessions.jsp");
             rd.forward(request, response);
         }
