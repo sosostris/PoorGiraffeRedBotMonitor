@@ -102,7 +102,7 @@ public class AdminServlet extends HttpServlet {
                     MovementBean.moveByUDP("R");
                 }
                 try {
-                        Thread.sleep(2000);
+                        Thread.sleep(2500);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(MovementServlet.class.getName()).log(Level.SEVERE, null, ex);
                     }
